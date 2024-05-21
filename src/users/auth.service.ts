@@ -14,6 +14,12 @@ export class AuthService {
   constructor(private userService: UsersService) {}
 
   async register(email: string, full_name: string, password: string) {
+    // check if email is already in use
+    const users = await this.userService.find(email);
+    if (users.length > 0) {
+      throw new BadRequestException('Email is already in use');
+    }
+
     // generate salt
     const salt = randomBytes(8).toString('hex');
     // encrypt user password
@@ -41,7 +47,7 @@ export class AuthService {
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     // return bad request when passwords did not match
     if (storedHash !== hash.toString('hex')) {
-      throw new BadRequestException('Bad password');
+      throw new BadRequestException('Bad password!');
     }
 
     // return user as response

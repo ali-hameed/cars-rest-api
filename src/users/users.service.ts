@@ -17,10 +17,6 @@ export class UsersService {
       const res = await this.repo.save(user);
       return res;
     } catch (error) {
-      console.log(error.driverError);
-      if (error.driverError.errno === 19) {
-        throw new BadRequestException('Email already in use');
-      }
       throw new BadRequestException('invalid inputs');
     }
   }
