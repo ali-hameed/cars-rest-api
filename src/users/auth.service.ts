@@ -26,11 +26,8 @@ export class AuthService {
     const hash = (await scrypt(password, salt, 32)) as Buffer;
     const hashedPassword = salt + '.' + hash.toString('hex');
     // check if email is already in use & create user
-    const user = await this.userService.create(
-      full_name,
-      email,
-      hashedPassword,
-    );
+    let user: any;
+    user = await this.userService.create(full_name, email, hashedPassword);
     // return a response with a cookie that contains user id
     return user;
   }

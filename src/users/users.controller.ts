@@ -82,7 +82,8 @@ export class UsersController {
 
   @Post()
   async createUser(@Body() body: RegisterUserDto) {
-    const DBResponse = await this.userService.create(
+    let DBResponse: User;
+    DBResponse = await this.userService.create(
       body.full_name,
       body.email,
       body.password,
